@@ -85,6 +85,84 @@ CREATE TABLE `oauth_client_details` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE `address_master` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `address` VARCHAR(200) NOT NULL,
+  `area` VARCHAR(45) NOT NULL,
+  `city` VARCHAR(45) NOT NULL,
+  `district` VARCHAR(45) NOT NULL,
+  `state` VARCHAR(45) NOT NULL,
+  `pin_code` INT NOT NULL,
+  `country` VARCHAR(45) NOT NULL,
+  UNIQUE INDEX `address_UNIQUE` (`address` ASC),
+  PRIMARY KEY (`id`));
+
+
+CREATE TABLE `test_category_master` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `test_name` varchar(200) NOT NULL,
+  `test_desc` varchar(300) NOT NULL,
+  `category_type` int(11) NOT NULL,
+  `parent_id` bigint(20) NOT NULL,
+  `test_amount` int(11) DEFAULT NULL,
+  `discount_amount` int(11) DEFAULT NULL,
+  `facility_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sjhdgfjsdhfgjsdgfjsdgfjsdgf_idx` (`facility_id`),
+  CONSTRAINT `sjhdgfjsdhfgjsdgfjsdgfjsdgf` FOREIGN KEY (`facility_id`) REFERENCES `medical_facility_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+
+
+SELECT * FROM diagno_lab.test_category_master where parent_id=0 and facility_id=1;
+SELECT * FROM diagno_lab.test_category_master where parent_id = 1 and category_type = 0 and facility_id=1;
+SELECT * FROM diagno_lab.test_category_master where parent_id = 2 and category_type = 1 and facility_id=1;
+SELECT * FROM diagno_lab.test_category_master where parent_id = 6 and category_type = 1 and facility_id=1;
+
+CREATE TABLE `patient_details` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(10) NOT NULL,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
+  `gender` varchar(20) NOT NULL,
+  `age` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `mobile` varchar(10) NOT NULL,
+  `aadhar_no` varchar(12) DEFAULT NULL,
+  `address_id` bigint(20) NOT NULL,
+  `facility_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sajkhfkjsdhkaldhfksdfkd_idx` (`address_id`),
+  KEY `ajkshgksjdhsdjkghklfjghkdfjghkf_idx` (`facility_id`),
+  CONSTRAINT `ajkshgksjdhsdjkghklfjghkdfjghkf` FOREIGN KEY (`facility_id`) REFERENCES `medical_facility_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `sajkhfkjsdhkaldhfksdfkd` FOREIGN KEY (`address_id`) REFERENCES `address_master` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+               
+               CREATE TABLE `patient_registration` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `patient_id` bigint(20) NOT NULL,
+  `advised_date` date NOT NULL,
+  `advised_by_doctor` varchar(50) DEFAULT NULL,
+  `advised_facility` varchar(100) DEFAULT NULL,
+  `advised_facility_address` bigint(20) DEFAULT NULL,
+  `report_delivery_mode` varchar(45) DEFAULT NULL,
+  `is_urgent` int(11) DEFAULT NULL,
+  `reffered_by` varchar(45) DEFAULT NULL,
+  `insurance_company_id` int(11) DEFAULT NULL,
+  `clinical_history` varchar(500) DEFAULT NULL,
+  `report_delivered_by` int(11) DEFAULT NULL,
+  `facility_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ajkdghajkhgkjsdhfksdhfkdjsfkd_idx` (`facility_id`),
+  KEY `jkahgkjsdhgsdkfhkdjhfksdjf_idx` (`advised_facility_address`),
+  KEY `zxnmbvmxcbvmxcvbmxcvmxc_idx` (`patient_id`),
+  CONSTRAINT `ajkdghajkhgkjsdhfksdhfkdjsfkd` FOREIGN KEY (`facility_id`) REFERENCES `medical_facility_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `jkahgkjsdhgsdkfhkdjhfksdjf` FOREIGN KEY (`advised_facility_address`) REFERENCES `address_master` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `zxnmbvmxcbvmxcvbmxcvmxc` FOREIGN KEY (`patient_id`) REFERENCES `patient_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 
 
